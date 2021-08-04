@@ -2,10 +2,21 @@ import React from "react";
 
 const ProductListing = (props) => {
   const rows = props.productlist.map((item) => {
+    //console.log("ProductListing props: ", props)
     return (
       <tr key={item.id}>
         <td>{item.name}</td>
         <td>{item.description}</td>
+        <td>
+          <button 
+            onClick={() => {
+              console.log("buy-button onClick", item.id) //funkar buy onClick 5
+              props.updateOrder(item.id);
+            }}
+            className="btn btn-info"
+            > Köp
+          </button>
+        </td>
       </tr>
     );
   });
@@ -16,8 +27,9 @@ const ProductListing = (props) => {
     <table className="table table-striped table-bordered">
       <thead className="thead-dark">
         <tr>
-          <th>Name</th>
-          <th>Description</th>
+          <th>Godis sort</th>
+          <th>Beskrivning</th>
+          <th>Villhöver</th>
         </tr>
       </thead>
       <tbody>{rows}</tbody>

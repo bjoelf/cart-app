@@ -1,13 +1,18 @@
 import React, { Component } from "react";
 import getProducts from "../api/prodApi";
 import ProductListing from "./products";
+import Cart from "./cart";
 //import Footer from "./Footer";
+
+//order item counter
+let count = 0;
 
 class App extends Component {
   state = {
     prodList: [],
     orderList: [],
     cartEmthy: false,
+    itemCounter: 0,
   };
 
   //Load data on startup.
@@ -20,51 +25,36 @@ class App extends Component {
     console.log("cdm getProducts: ", this.state.prodList);
   }
 
-  //add orderItem to Order here!
-  updateOrder = (id) => {
-    console.log("Update order: ", id); //den här funkar när item är en int..
+
+  updateOrder = (orderitem) => {
     const _orderList = this.state.orderList;
+    orderitem.id = ++count;
 
-    //Skapa orderitem som object
-    const item = { Id: id, Quantity: 1 };
-    console.log("Order item: ", item);
+    
+    if (orderitem !== undefined) {
+      _orderList.push(orderitem);
 
-    //TODO: gör om till att addera quantity
-    //till befintlig orderitem av samma ID.
-    if (item !== undefined) {
-      _orderList.push(item);
+      this.setState({
+        orderList: _orderList,
+      });
     }
-
-    this.setState({
-      orderList: _orderList,
-    });
-
-    //ok,, funkar men otroligt fult...
-    console.log("updateD_Order: ", this.state.orderList);
   };
 
-  render() {
-    const cart =
-      this.state.orderList.length > 0 ? (
-        <div margin="true" className="col-md-6">
-          <span>Godispåsen innehåller något</span>
-        </div>
-      ) : (
-        <span>Godispåsen tom!</span>
-      );
 
+
+
+  render() {
     return (
       <React.Fragment>
         <div className="container stay-clear">
-          <h3>Product list</h3>
+          <h3>The sweetest shop</h3>
           <hr />
           <div className="row">
             <ProductListing
-              productlist={this.state.prodList}
-              //den här funkar för köpknappen skickar till updateOrder
+              pList={this.state.prodList}
               updateOrder={this.updateOrder}
             />
-            {cart}
+            <Cart oList={this.state.orderList} />
           </div>
         </div>
       </React.Fragment>

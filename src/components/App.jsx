@@ -5,7 +5,7 @@ import Cart from "./cart";
 //import Footer from "./Footer";
 
 //order item counter
-let count = 0;
+//let count = 0;
 
 class App extends Component {
   state = {
@@ -15,7 +15,6 @@ class App extends Component {
     itemCounter: 0,
   };
 
-  //Load data on startup.
   componentDidMount() {
     const _this = this;
 
@@ -25,23 +24,42 @@ class App extends Component {
     console.log("cdm getProducts: ", this.state.prodList);
   }
 
-
   updateOrder = (orderitem) => {
+    console.log("orderitem:", orderitem);
     const _orderList = this.state.orderList;
-    orderitem.id = ++count;
+    //let _list = [];
+    let found = false;
 
-    
-    if (orderitem !== undefined) {
+    //Initiate list with initial buy
+    if (_orderList.length === 0) {
+      console.log("_orderList.length === 0:", orderitem);
       _orderList.push(orderitem);
-
-      this.setState({
-        orderList: _orderList,
-      });
+      this.setState({ orderList: _orderList });
+      return;
     }
+
+    _orderList.forEach((val) => {
+      //val.id = this.state.orderList.length + 1;
+
+      //Den här verkar funka!
+      if (val.name === orderitem.name) {
+        val.quantity = val.quantity + 1;
+        found = true;
+        console.log("val.name === orderitem.name", val);
+      }
+    });
+
+    if (found === false) {
+      orderitem.id = _orderList.length + 1;
+      console.log("found === false", orderitem);
+      _orderList.push(orderitem);
+    }
+
+    this.setState({
+      orderList: _orderList,
+    });
+    console.log("this.setState: ", this.state.orderList);
   };
-
-
-
 
   render() {
     return (

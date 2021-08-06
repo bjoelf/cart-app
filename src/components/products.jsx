@@ -10,7 +10,7 @@ const ProductListing = (props) => {
         <td>
           <button
             onClick={() => {
-              console.log("buy-button onClick", product.id, product.name); //funkar buy onClick 5
+              //console.log("buy-button onClick", product.id, product.name); //funkar buy onClick 5
               const orderitem =  { name: product.name, quantity: 1 };
               props.updateOrder(orderitem);
             }}

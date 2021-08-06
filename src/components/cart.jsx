@@ -1,11 +1,12 @@
 import React from "react";
 
 const Cart = (props) => {
-  const rows = props.oList.map((item) => {
-    console.log("cart-item: ", item);
+  //console.log("cart props: ", props);
+  const rows = props.oList.map((item, index) => {
+    //console.log("cart-item: ", item);
     //console.log("cart-item_quantity: ", item.quantity);
     return (
-      <tr key={item.id}>
+      <tr key={index}>
         <td>{item.name}</td>
         <td>{item.quantity}</td>
       </tr>

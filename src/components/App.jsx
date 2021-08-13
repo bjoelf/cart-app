@@ -4,15 +4,13 @@ import ProductListing from "./products";
 import Cart from "./cart";
 //import Footer from "./Footer";
 
-//order item counter
-//let count = 0;
-
 class App extends Component {
   state = {
     prodList: [],
     orderList: [],
     cartEmthy: false,
-    itemCounter: 0,
+    totalCost: 0,
+    totalItems: 0, //antalet godisar!
   };
 
   componentDidMount() {
@@ -25,40 +23,46 @@ class App extends Component {
   }
 
   updateOrder = (orderitem) => {
-    console.log("orderitem:", orderitem);
-    const _orderList = this.state.orderList;
-    //let _list = [];
+    let _orderList = this.state.orderList;
+    let _totalCost = 0;
+    let _totalItems = 0;
     let found = false;
 
     //Initiate list with initial buy
     if (_orderList.length === 0) {
-      console.log("_orderList.length === 0:", orderitem);
       _orderList.push(orderitem);
-      this.setState({ orderList: _orderList });
+      _totalCost = orderitem.price;
+      _totalItems = orderitem.quantity;
+      this.setState({
+        orderList: _orderList,
+        totalCost: _totalCost,
+        totalItems: _totalItems,
+      });
       return;
     }
 
     _orderList.forEach((val) => {
-      //val.id = this.state.orderList.length + 1;
-
-      //Den här verkar funka!
       if (val.name === orderitem.name) {
         val.quantity = val.quantity + 1;
+        val.price = (val.quantity * orderitem.price).toFixed(2);
         found = true;
-        console.log("val.name === orderitem.name", val);
       }
+      _totalCost = Number(_totalCost) + Number(val.price);
+      _totalItems = Number(_totalItems) + Number(val.quantity);
     });
 
     if (found === false) {
       orderitem.id = _orderList.length + 1;
-      console.log("found === false", orderitem);
+      _totalCost = Number(_totalCost) + Number(orderitem.price);
+      _totalItems = Number(_totalItems) + Number(orderitem.quantity);
       _orderList.push(orderitem);
     }
 
     this.setState({
       orderList: _orderList,
+      totalCost: _totalCost,
+      totalItems: _totalItems,
     });
-    console.log("this.setState: ", this.state.orderList);
   };
 
   render() {
@@ -72,7 +76,11 @@ class App extends Component {
               pList={this.state.prodList}
               updateOrder={this.updateOrder}
             />
-            <Cart oList={this.state.orderList} />
+            <Cart
+              oList={this.state.orderList}
+              tCost={this.state.totalCost}
+              tItems={this.state.totalItems}
+            />
           </div>
         </div>
       </React.Fragment>

@@ -7,11 +7,13 @@ const ProductListing = (props) => {
       <tr key={product.id}>
         <td>{product.name}</td>
         <td>{product.description}</td>
+        <td>{product.price}</td>
+
         <td>
           <button
             onClick={() => {
               //console.log("buy-button onClick", product.id, product.name); //funkar buy onClick 5
-              const orderitem =  { name: product.name, quantity: 1 };
+              const orderitem =  { name: product.name, quantity: 1, price: product.price };
               props.updateOrder(orderitem);
             }}
             className="btn btn-success"
@@ -32,6 +34,7 @@ const ProductListing = (props) => {
           <tr>
             <th>Godis sort</th>
             <th>Beskrivning</th>
+            <th>Pris</th>
             <th>Villhöver</th>
           </tr>
         </thead>

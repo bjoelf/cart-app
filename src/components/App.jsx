@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import getProducts from "../api/prodApi";
 import ProductListing from "./products";
 import Cart from "./cart";
-//import Footer from "./Footer";
+import Footer from "./Footer";
+import NavBar from "./navbar";
 
 class App extends Component {
   state = {
@@ -11,6 +12,8 @@ class App extends Component {
     cartEmthy: false,
     totalCost: 0,
     totalItems: 0, //antalet godisar!
+    userToken: null,
+    loginData: [],
   };
 
   componentDidMount() {
@@ -21,6 +24,20 @@ class App extends Component {
     });
     console.log("cdm getProducts: ", this.state.prodList);
   }
+
+  login = (logindata) => {
+    const _this = this;
+    loginUser(loginData).then((data) => {
+      console.log(data);
+      if (data === "Ok") {
+        _this.setState({usertoken: getUserToken() });
+      }
+    });
+  };
+
+  logout = () => {
+    this.setState({ userToken: null});
+  };
 
   updateOrder = (orderitem) => {
     let _orderList = this.state.orderList;
@@ -69,7 +86,8 @@ class App extends Component {
     return (
       <React.Fragment>
         <div className="container stay-clear">
-          <h3>The sweetest shop</h3>
+          <NavBar tCost={this.state.totalCost} tItems={this.state.totalItems} />
+
           <hr />
           <div className="row">
             <ProductListing
@@ -83,6 +101,7 @@ class App extends Component {
             />
           </div>
         </div>
+        <Footer></Footer>
       </React.Fragment>
     );
   }

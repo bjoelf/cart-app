@@ -1,7 +1,8 @@
 import React from "react";
 
 const Cart = (props) => {
-  //console.log("cart props: ", props);
+  console.log("cart props: ", props);
+
   const rows = props.oList.map((item, index) => {
     //console.log("cart-item: ", item);
     //console.log("cart-item_quantity: ", item.quantity);
@@ -14,11 +15,9 @@ const Cart = (props) => {
     );
   });
 
-  
-
   return (
     <div className="col-md-4 middle-bar">
-      <h5>Dessa har du i din godispåse</h5>
+      <h5>Dessa sorter har du i din godispåse</h5>
       <table className="table table-striped table-bordered">
         <thead className="thead-dark">
           <tr>
@@ -30,17 +29,20 @@ const Cart = (props) => {
         <tbody>{rows}</tbody>
       </table>
       <hr />
-      <div className="col-md-4 middle-bar">
-      <table className="table table-striped table-bordered">
-      <thead className="thead-dark">
-          <tr>
-            <th>Totalt</th>
-            <th>Antal</th>
-            <th>Kostnad</th>
-          </tr>
-        </thead>
-        <tbody>props.tItems det här funkar inte!</tbody>
-      </table>
+
+      <div >
+        <table className="table table-striped table-bordered">
+          <thead className="thead-dark">
+            <tr>
+              <th>Totalt antal</th>
+              <th>Totalt kostnad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <td> {props.tItems} </td>
+            <td>{props.tCost.toFixed(2)}</td>
+          </tbody>
+        </table>
       </div>
     </div>
   );

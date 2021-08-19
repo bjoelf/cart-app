@@ -1,13 +1,18 @@
 import axios from "axios";
 
-const apiUrl = "https://localhost:44386/api/Jwt";
+let apiUrl = "https://localhost:44349/api/Jwt";
+/*
+export function setApiUrl(url) {
+    apiUrl = url;
+}
+*/
 
 var userToken = null;
 export function getUserToken() {
     return userToken;
 }
 
-export async function loginUser(login) {
+export default async function logInUser(login) {
     try {
         let response = await axios.post(apiUrl + "/login", {
             UserName: login.userName,
@@ -16,7 +21,7 @@ export async function loginUser(login) {
         console.log("loginResponse", response);
         let json = await response.data;
         console.log("loginResponsJson", json);
-        userToken = json.userToken;
+        userToken = json.token;
         return "Ok";
     } catch (e) {
         console.log('Error!', e);

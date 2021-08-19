@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import getProducts from "../api/prodApi";
+import logInUser, {getUserToken} from "../api/userApi";
 import ProductListing from "./products";
 import Cart from "./cart";
 import Footer from "./Footer";
@@ -11,7 +12,7 @@ class App extends Component {
     orderList: [],
     cartEmthy: false,
     totalCost: 0,
-    totalItems: 0, //antalet godisar!
+    totalItems: 0,
     userToken: null,
     loginData: [],
   };
@@ -25,12 +26,13 @@ class App extends Component {
     console.log("cdm getProducts: ", this.state.prodList);
   }
 
-  login = (logindata) => {
+  login = (loginData) => {
     const _this = this;
-    loginUser(loginData).then((data) => {
+    logInUser(loginData).then((data) => {
       console.log(data);
       if (data === "Ok") {
         _this.setState({usertoken: getUserToken() });
+        console.log("usertoken:", this.state.usertoken);
       }
     });
   };
@@ -45,7 +47,7 @@ class App extends Component {
     let _totalItems = 0;
     let found = false;
 
-    //Initiate list with initial buy
+    //Initiate list with initial purchase
     if (_orderList.length === 0) {
       _orderList.push(orderitem);
       _totalCost = orderitem.price;
@@ -86,8 +88,11 @@ class App extends Component {
     return (
       <React.Fragment>
         <div className="container stay-clear">
-          <NavBar tCost={this.state.totalCost} tItems={this.state.totalItems} />
-
+          <NavBar tCost={this.state.totalCost} tItems={this.state.totalItems} 
+          login={this.login}
+          logout={this.logout}
+          status={this.state.userToken === null ? false : true}
+          />
           <hr />
           <div className="row">
             <ProductListing

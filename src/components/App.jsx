@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import getProducts from "../api/prodApi";
-import logInUser, {getUserToken} from "../api/userApi";
+import logInUser, { getUserToken, ApplyRegistration } from "../api/userApi";
 import ProductListing from "./products";
 import Cart from "./cart";
 import Footer from "./Footer";
 import NavBar from "./navbar";
+import Registration from "./Registration";
+import Account from "./Account";
 
 class App extends Component {
   state = {
@@ -15,6 +17,9 @@ class App extends Component {
     totalItems: 0,
     userToken: null,
     loginData: [],
+    showProducts: true,
+    showRegister: false,
+    showAccount: false,
   };
 
   componentDidMount() {
@@ -26,19 +31,30 @@ class App extends Component {
     console.log("cdm getProducts: ", this.state.prodList);
   }
 
+  register = (regData) => {
+   // const _this = this;
+    ApplyRegistration(regData).then((data) => {
+      console.log("reg resonse", data);
+      if (data === "Ok") {
+        console.log("Registration success");
+        //Call login method here to login sucesfull registration?
+      }
+    });
+  };
+
   login = (loginData) => {
     const _this = this;
     logInUser(loginData).then((data) => {
       console.log(data);
       if (data === "Ok") {
-        _this.setState({usertoken: getUserToken() });
+        _this.setState({ usertoken: getUserToken() });
         console.log("usertoken:", this.state.usertoken);
       }
     });
   };
 
   logout = () => {
-    this.setState({ userToken: null});
+    this.setState({ userToken: null });
   };
 
   updateOrder = (orderitem) => {
@@ -88,22 +104,28 @@ class App extends Component {
     return (
       <React.Fragment>
         <div className="container stay-clear">
-          <NavBar tCost={this.state.totalCost} tItems={this.state.totalItems} 
-          login={this.login}
-          logout={this.logout}
-          status={this.state.userToken === null ? false : true}
+          <NavBar
+            tCost={this.state.totalCost}
+            tItems={this.state.totalItems}
+            login={this.login}
+            logout={this.logout}
+            status={this.state.userToken === null ? false : true}
           />
           <hr />
           <div className="row">
             <ProductListing
               pList={this.state.prodList}
               updateOrder={this.updateOrder}
+              showProd={this.state.showProducts}
             />
             <Cart
               oList={this.state.orderList}
               tCost={this.state.totalCost}
               tItems={this.state.totalItems}
+              showProd={this.state.showProducts}
             />
+            <Account showAccount={this.state.showAccount} />
+            <Registration showReg={this.state.showRegister} />
           </div>
         </div>
         <Footer></Footer>

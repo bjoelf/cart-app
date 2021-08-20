@@ -28,3 +28,7 @@ export default async function logInUser(login) {
         return "Bad"
     }
 }
+
+export async function ApplyRegistration(data) {
+    return "Ok";
+}

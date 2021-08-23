@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import getProducts from "../api/prodApi";
-import logInUser, { getUserToken, ApplyRegistration } from "../api/userApi";
+import logInUser, { getUserToken, applyRegistration, getUserId } from "../api/userApi";
 import ProductListing from "./products";
 import Cart from "./cart";
 import Footer from "./Footer";
@@ -20,6 +20,8 @@ class App extends Component {
     showProducts: true,
     showRegister: false,
     showAccount: false,
+    userId: null,
+    previousOrders: [],
   };
 
   componentDidMount() {
@@ -32,12 +34,12 @@ class App extends Component {
   }
 
   register = (regData) => {
-   // const _this = this;
-    ApplyRegistration(regData).then((data) => {
+    // const _this = this;
+    applyRegistration(regData).then((data) => {
       console.log("reg resonse", data);
       if (data === "Ok") {
         console.log("Registration success");
-        //Call login method here to login sucesfull registration?
+        //Call login method here to login successfull registration?
       }
     });
   };
@@ -48,6 +50,8 @@ class App extends Component {
       console.log(data);
       if (data === "Ok") {
         _this.setState({ usertoken: getUserToken() });
+        _this.setState({ userId: getUserId()});
+
         console.log("usertoken:", this.state.usertoken);
       }
     });
@@ -100,6 +104,19 @@ class App extends Component {
     });
   };
 
+  Account = () => {
+    // Vad ska vi göra för att hämta user data och historiska ordrar??
+
+    //Vi avaktar och gör klart att ladda in en order!
+
+  }
+
+  Checkout = () => {
+    // Ta orderlist och user Id och skicka in order till backend.
+
+
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -110,6 +127,8 @@ class App extends Component {
             login={this.login}
             logout={this.logout}
             status={this.state.userToken === null ? false : true}
+            account={this.Account}
+            checkout={this.Checkout}
           />
           <hr />
           <div className="row">
@@ -125,7 +144,10 @@ class App extends Component {
               showProd={this.state.showProducts}
             />
             <Account showAccount={this.state.showAccount} />
-            <Registration showReg={this.state.showRegister} />
+            <Registration
+              showReg={this.state.showRegister}
+              handleReg={this.register}
+            />
           </div>
         </div>
         <Footer></Footer>

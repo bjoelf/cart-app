@@ -1,17 +1,15 @@
 import axios from "axios";
 
-const apiAdress = "https://localhost:44386/api/";
+const apiAdress = "https://localhost:44349/api/";
 
 //Properties must match view model, createorder
 export async function createOrder(order) {
   try {
     console.log("api createOrder");
-    let response = await axios.post(apiAdress + "Api/", {
-      //Name: person.Name,
-      //Phone: person.Phone,
-      //CityId: person.CityId, //ändrade från City
-      //Country: person.Country,
-      //Language: person.Language,
+    let response = await axios.post(apiAdress + "Order/", {
+
+      //order items array... ??
+
     });
     console.log("createOrder Respons:", response);
     let json = await response.data;

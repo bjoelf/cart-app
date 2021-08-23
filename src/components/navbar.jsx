@@ -43,9 +43,20 @@ const NavBar = (props) => {
             </button>
           </form>
         ) : (
-          <button className="btn btn-dark ml-auto" onClick={props.logout}>
-            Logout
-          </button>
+          <div>
+            <button className="btn btn-dark ml-auto" onClick={props.logout}>
+              Logout
+            </button>
+
+            <button className="btn btn-success ml-auto" onClick={props.account}>
+              Account
+            </button>
+
+            <button className="btn btn-warning ml-auto" onClick={props.checkout}>
+              Checkout
+            </button>
+
+          </div>
         )}
         <div className="badge badge-pill badge-secondary">
           Antal i påsen: &nbsp;

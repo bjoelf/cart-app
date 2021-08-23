@@ -6,10 +6,27 @@ const Registration = (props) => {
   const handleRegistration = (event) => {
     event.preventDefault();
     let regData = {
-      userName: event.target["userName"].value,
-      password: event.target["password"].value,
+
+      
+      Firstname: event.target["firstname"].value,
+      Lastname: event.target["lastname"].value,
+
+      Streetadress: event.target["streetadress"].value,
+      Streetnumber: event.target["streetnumber"].value,
+      Postalcode: event.target["postalcode"].value,
+      City: event.target["city"].value,
+
+      Email: event.target["email"].value,
+      Phone: event.target["phone"].value,
+      
+      Password: event.target["password"].value,
     };
-    props.register(regData);
+
+    // Anropar register i App.jsx
+
+    //Här smäller det! Registration props:  undefined
+
+    props.handleReg(regData);
   };
 
   return (
@@ -45,6 +62,12 @@ const Registration = (props) => {
             <input
               className="form-control mr-sm-2"
               type="text"
+              name="streetnumber"
+              placeholder="Street Number"
+            />
+            <input
+              className="form-control mr-sm-2"
+              type="text"
               name="postalcode"
               placeholder="Postal Code"
             />
@@ -53,6 +76,12 @@ const Registration = (props) => {
               type="text"
               name="city"
               placeholder="City"
+            />
+            <input
+              className="form-control mr-sm-2"
+              type="text"
+              name="email"
+              placeholder="Email (your username)"
             />
             <input
               className="form-control mr-sm-2"
@@ -77,15 +106,9 @@ const Registration = (props) => {
               Register
             </button>
           </form>
-
-          {/*
-                langa in alla rutor för användaruppgifterna
-                och tidigare ordrar här!!
-
-            */}
         </div>
       ) : (
-        <span>reg_off</span>
+        <span> </span>
       )}
     </div>
   );

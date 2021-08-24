@@ -3,7 +3,7 @@ import React from "react";
 //Stateless Functional Component
 const ProductListing = (props) => {
   const rows = props.pList.map((product) => {
-    console.log("ProductListing props: ", props);
+    //console.log("ProductListing props: ", props);
     return (
       <tr key={product.id}>
         <td>{product.name}</td>

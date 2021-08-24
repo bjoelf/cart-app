@@ -1,6 +1,6 @@
 import axios from "axios";
 
-let apiUrl = "http://192.168.1.207:44349/api/";
+let apiUrl = "https://localhost:44349/api/";
 /*
 export function setApiUrl(url) {
     apiUrl = url;
@@ -12,22 +12,26 @@ export function getUserToken() {
   return userToken;
 }
 
-var userId = null;
-export function getUserId() {
-  return userId;
+var username = null;
+export function getUserName() {
+  return username;
 }
 
 export default async function logInUser(login) {
+  console.log("login called", login);
+  username = login.userName;
+  console.log("login username", getUserName);
   try {
     let response = await axios.post(apiUrl + "Jwt/login/", {
       UserName: login.userName,
       Password: login.password,
     });
     console.log("loginResponse", response);
+
+    //Respons:
     let json = await response.data;
     console.log("loginResponsJson", json);
     userToken = json.token;
-    userId = json.userId;
     return "Ok";
   } catch (e) {
     console.log("Error!", e);

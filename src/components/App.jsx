@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import getProducts from "../api/prodApi";
-import logInUser, { getUserToken, applyRegistration, getUserId } from "../api/userApi";
+import createOrder from "../api/orderApi";
+import logInUser, {
+  getUserToken,
+  applyRegistration,
+  getUserName,
+} from "../api/userApi";
 import ProductListing from "./products";
 import Cart from "./cart";
 import Footer from "./Footer";
@@ -20,7 +25,6 @@ class App extends Component {
     showProducts: true,
     showRegister: false,
     showAccount: false,
-    userId: null,
     previousOrders: [],
   };
 
@@ -30,16 +34,18 @@ class App extends Component {
     getProducts().then((prdLst) => {
       _this.setState({ prodList: prdLst });
     });
-    console.log("cdm getProducts: ", this.state.prodList);
   }
 
   register = (regData) => {
     // const _this = this;
     applyRegistration(regData).then((data) => {
-      console.log("reg resonse", data);
+      //console.log("reg resonse", data);
       if (data === "Ok") {
+
+        //TODO: Inte klart här!
         console.log("Registration success");
         //Call login method here to login successfull registration?
+
       }
     });
   };
@@ -49,16 +55,22 @@ class App extends Component {
     logInUser(loginData).then((data) => {
       console.log(data);
       if (data === "Ok") {
-        _this.setState({ usertoken: getUserToken() });
-        _this.setState({ userId: getUserId()});
+        _this.setState({ userToken: getUserToken() });
+        _this.setState({ userName: getUserName() });
 
-        console.log("usertoken:", this.state.usertoken);
+        //console.log("usertoken:", this.state.userToken);
+        //console.log("userName:", this.state.userName);
       }
     });
   };
 
   logout = () => {
-    this.setState({ userToken: null });
+    const _this = this;
+    console.log("logout called");
+    _this.setState({ userToken: null });
+    _this.setState({ userId: null });
+    console.log("logout userToken:", this.state.userToken);
+    console.log("logout userId:", this.state.userId);
   };
 
   updateOrder = (orderitem) => {
@@ -106,16 +118,26 @@ class App extends Component {
 
   Account = () => {
     // Vad ska vi göra för att hämta user data och historiska ordrar??
-
     //Vi avaktar och gör klart att ladda in en order!
-
-  }
+  };
 
   Checkout = () => {
+    console.log("Checkout called"); //Funkar
+    console.log("Checkout orderlist:", this.state.orderList); //Funkar
+    console.log("Checkout getUserName:", getUserName()); //Funkar
+
     // Ta orderlist och user Id och skicka in order till backend.
 
+    const _this = this;
+    createOrder(getUserName(), this.state.orderList).then((data) => {
+      console.log(data);
 
-  }
+      if (data === "Ok") {
+        console.log("order gick igenom");
+        _this.setState({ orderList: null });
+      }
+    });
+  };
 
   render() {
     return (
@@ -126,7 +148,7 @@ class App extends Component {
             tItems={this.state.totalItems}
             login={this.login}
             logout={this.logout}
-            status={this.state.userToken === null ? false : true}
+            status={this.state.userToken === null ? true : false}
             account={this.Account}
             checkout={this.Checkout}
           />

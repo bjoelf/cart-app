@@ -1,7 +1,9 @@
 import React from "react";
 
 const Registration = (props) => {
-  console.log("Registration props: ", props.status);
+  
+  // Registration är inte klart!
+  //console.log("Registration props: ", props.status);
 
   const handleRegistration = (event) => {
     event.preventDefault();

@@ -3,17 +3,18 @@ import axios from "axios";
 const apiAdress = "https://localhost:44349/api/";
 
 //Properties must match view model, createorder
-export default async function createOrder(user, order) {
+export default async function createOrder(token, orderList) {
   try {
-    console.log("api createOrder");
-    console.log("user:", user);
-    console.log("order: ", order);
+    //console.log("token:", token);
+    console.log("order: ", orderList);
 
-    let response = await axios.post(apiAdress + "Order/", {
-
-      //order items array... ??
-
-    });
+    let response = await axios.post(
+      apiAdress + "Order/",
+      {
+        Items: orderList,
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
     console.log("createOrder Respons:", response);
     let json = await response.data;
 

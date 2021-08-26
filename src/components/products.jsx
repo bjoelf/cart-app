@@ -15,9 +15,10 @@ const ProductListing = (props) => {
             onClick={() => {
               //console.log("buy-button onClick", product.id, product.name); //funkar buy onClick 5
               const orderitem = {
-                name: product.name,
-                quantity: 1,
-                price: product.price,
+                Id: product.id,
+                Name: product.name,
+                Quantity: 1,
+                Price: product.price,
               };
               props.updateOrder(orderitem);
             }}

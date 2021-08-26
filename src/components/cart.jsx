@@ -6,9 +6,9 @@ const Cart = (props) => {
   const rows = props.oList.map((item, index) => {
     return (
       <tr key={index}>
-        <td>{item.name}</td>
-        <td>{item.quantity}</td>
-        <td>{item.price}</td>
+        <td>{item.Name}</td>
+        <td>{item.Quantity}</td>
+        <td>{item.Price}</td>
       </tr>
     );
   });

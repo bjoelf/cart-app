@@ -68,6 +68,9 @@ class App extends Component {
     const _this = this;
     console.log("logout called");
     _this.setState({ userToken: null });
+
+    //TODO: nolla usertoken i userApi.jsx
+
     _this.setState({ userId: null });
     console.log("logout userToken:", this.state.userToken);
     console.log("logout userId:", this.state.userId);
@@ -82,8 +85,8 @@ class App extends Component {
     //Initiate list with initial purchase
     if (_orderList.length === 0) {
       _orderList.push(orderitem);
-      _totalCost = orderitem.price;
-      _totalItems = orderitem.quantity;
+      _totalCost = orderitem.Price;
+      _totalItems = orderitem.Quantity;
       this.setState({
         orderList: _orderList,
         totalCost: _totalCost,
@@ -93,19 +96,19 @@ class App extends Component {
     }
 
     _orderList.forEach((val) => {
-      if (val.name === orderitem.name) {
-        val.quantity = val.quantity + 1;
-        val.price = (val.quantity * orderitem.price).toFixed(2);
+      if (val.Name === orderitem.Name) {
+        val.Quantity = val.Quantity + 1;
+        val.Price = (val.Quantity * orderitem.Price).toFixed(2);
         found = true;
       }
-      _totalCost = Number(_totalCost) + Number(val.price);
-      _totalItems = Number(_totalItems) + Number(val.quantity);
+      _totalCost = Number(_totalCost) + Number(val.Price);
+      _totalItems = Number(_totalItems) + Number(val.Quantity);
     });
 
     if (found === false) {
       orderitem.id = _orderList.length + 1;
-      _totalCost = Number(_totalCost) + Number(orderitem.price);
-      _totalItems = Number(_totalItems) + Number(orderitem.quantity);
+      _totalCost = Number(_totalCost) + Number(orderitem.Price);
+      _totalItems = Number(_totalItems) + Number(orderitem.Quantity);
       _orderList.push(orderitem);
     }
 
@@ -114,6 +117,8 @@ class App extends Component {
       totalCost: _totalCost,
       totalItems: _totalItems,
     });
+
+    console.log("orderlist", _orderList )
   };
 
   Account = () => {
@@ -122,14 +127,8 @@ class App extends Component {
   };
 
   Checkout = () => {
-    console.log("Checkout called"); //Funkar
-    console.log("Checkout orderlist:", this.state.orderList); //Funkar
-    console.log("Checkout getUserName:", getUserName()); //Funkar
-
-    // Ta orderlist och user Id och skicka in order till backend.
-
     const _this = this;
-    createOrder(getUserName(), this.state.orderList).then((data) => {
+    createOrder(this.state.userToken, this.state.orderList).then((data) => {
       console.log(data);
 
       if (data === "Ok") {

@@ -12,6 +12,8 @@ export function getUserToken() {
   return userToken;
 }
 
+//Metod för att nolla usertoken
+
 var username = null;
 export function getUserName() {
   return username;

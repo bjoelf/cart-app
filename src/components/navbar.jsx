@@ -2,7 +2,7 @@ import React from "react";
 
 //Stateless Functional Component
 const NavBar = (props) => {
-  console.log("props.status: ", props.status);
+  //console.log("props.status: ", props.status);
 
   // recives from login fields and send upwards to App component.
   const handleSubmit = (event) => {

@@ -98,7 +98,7 @@ class App extends Component {
     _orderList.forEach((val) => {
       if (val.Name === orderitem.Name) {
         val.Quantity = val.Quantity + 1;
-        val.Price = (val.Quantity * orderitem.Price).toFixed(2);
+        val.Price = (Number(val.Quantity) * Number(orderitem.Price)).toFixed(2);
         found = true;
       }
       _totalCost = Number(_totalCost) + Number(val.Price);

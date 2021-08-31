@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import getProducts from "../api/prodApi";
 import createOrder from "../api/orderApi";
 import logInUser, {
-  getUserToken,
   applyRegistration,
+  getUserToken,
   getUserName,
+  deleteUserToken,
+  deleteUserName,
 } from "../api/userApi";
 import ProductListing from "./products";
 import Cart from "./cart";
@@ -22,15 +24,40 @@ class App extends Component {
     totalItems: 0,
     userToken: null,
     loginData: [],
-    showProducts: true,
+    showProducts: false,
     showRegister: false,
     showAccount: false,
     previousOrders: [],
   };
 
-  componentDidMount() {
-    const _this = this;
+  showProducts = () => {
+    this.setState({
+      showProducts: true,
+      showRegister: true,
+      showAccount: true,
+    });
+  };
 
+  showRegister = () => {
+    this.setState({
+      showProducts: false,
+      showRegister: true,
+      showAccount: false,
+    });
+  };
+
+  showAccount = () => {
+    this.setState({
+      showProducts: false,
+      showRegister: false,
+      showAccount: true,
+    });
+  };
+
+  componentDidMount() {
+    this.showProducts();
+
+    const _this = this;
     getProducts().then((prdLst) => {
       _this.setState({ prodList: prdLst });
     });
@@ -41,11 +68,9 @@ class App extends Component {
     applyRegistration(regData).then((data) => {
       //console.log("reg resonse", data);
       if (data === "Ok") {
-
         //TODO: Inte klart här!
         console.log("Registration success");
         //Call login method here to login successfull registration?
-
       }
     });
   };
@@ -57,23 +82,27 @@ class App extends Component {
       if (data === "Ok") {
         _this.setState({ userToken: getUserToken() });
         _this.setState({ userName: getUserName() });
-
-        //console.log("usertoken:", this.state.userToken);
-        //console.log("userName:", this.state.userName);
       }
     });
   };
 
   logout = () => {
     const _this = this;
-    console.log("logout called");
-    _this.setState({ userToken: null });
+    //    console.log("logout called");
+    _this.setState({
+      userToken: deleteUserToken(),
+      userName: deleteUserName(),
+    });
 
     //TODO: nolla usertoken i userApi.jsx
 
-    _this.setState({ userId: null });
-    console.log("logout userToken:", this.state.userToken);
-    console.log("logout userId:", this.state.userId);
+    //_this.setState({ userId: null });
+
+    //deleteUserToken,
+    //deleteUserName,
+
+    //console.log("logout userToken:", this.state.userToken);
+    //console.log("logout userId:", this.state.userId);
   };
 
   updateOrder = (orderitem) => {
@@ -98,7 +127,9 @@ class App extends Component {
     _orderList.forEach((val) => {
       if (val.Name === orderitem.Name) {
         val.Quantity = val.Quantity + 1;
-        val.Price = Number((Number(val.Quantity) * Number(orderitem.Price)).toFixed(2));
+        val.Price = Number(
+          (Number(val.Quantity) * Number(orderitem.Price)).toFixed(2)
+        );
         console.log("val.Price:", val.Price); // funkar = siffra
         found = true;
       }
@@ -107,12 +138,10 @@ class App extends Component {
     });
 
     if (found === false) {
-  
-        //Den här borde vi bara kunna ta bort!
+      //Den här borde vi bara kunna ta bort!
       //orderitem.Id = _orderList.length + 1;
       orderitem.Price = orderitem.Price.toFixed(2);
 
-  
       _totalCost = Number(_totalCost) + Number(orderitem.Price);
       _totalItems = Number(_totalItems) + Number(orderitem.Quantity);
       _orderList.push(orderitem);
@@ -124,12 +153,7 @@ class App extends Component {
       totalItems: _totalItems,
     });
 
-    console.log("orderlist", _orderList )
-  };
-
-  Account = () => {
-    // Vad ska vi göra för att hämta user data och historiska ordrar??
-    //Vi avaktar och gör klart att ladda in en order!
+    console.log("orderlist", _orderList);
   };
 
   Checkout = () => {
@@ -156,7 +180,7 @@ class App extends Component {
             login={this.login}
             logout={this.logout}
             status={this.state.userToken === null ? true : false}
-            account={this.Account}
+            account={this.showAccount}
             checkout={this.Checkout}
           />
           <hr />
@@ -172,7 +196,11 @@ class App extends Component {
               tItems={this.state.totalItems}
               showProd={this.state.showProducts}
             />
-            <Account showAccount={this.state.showAccount} />
+            <Account
+              showAccount={this.state.showAccount}
+              details={this.state.showDetails}
+              history={this.state.showHistory}
+            />
             <Registration
               showReg={this.state.showRegister}
               handleReg={this.register}

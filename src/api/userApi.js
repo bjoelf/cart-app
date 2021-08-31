@@ -11,11 +11,17 @@ var userToken = null;
 export function getUserToken() {
   return userToken;
 }
-
-//Metod för att nolla usertoken
+export function deleteUserToken() {
+  userToken = null;
+  return userToken;
+}
 
 var username = null;
 export function getUserName() {
+  return username;
+}
+export function deleteUserName() {
+  username = null;
   return username;
 }
 
@@ -49,15 +55,15 @@ export async function applyRegistration(newuser) {
   try {
     console.log("api ApplyRegistration");
     let response = await axios.post(apiUrl + "RegUser/", {
-        FirstName: newuser.Firstname,
-        LastName: newuser.LastName,
-        StreetAdress: newuser.StreetAdress,
-        StreetNumber: newuser.StreetNumber,
-        PostalCode: newuser.PostalCode,
-        City: newuser.City,
-        Email: newuser.Email,
-        Phone: newuser.PhoneNumber,
-        Password: newuser.password,
+      FirstName: newuser.Firstname,
+      LastName: newuser.LastName,
+      StreetAdress: newuser.StreetAdress,
+      StreetNumber: newuser.StreetNumber,
+      PostalCode: newuser.PostalCode,
+      City: newuser.City,
+      Email: newuser.Email,
+      Phone: newuser.PhoneNumber,
+      Password: newuser.password,
     });
     console.log("ApplyRegistration Respons:", response);
     let json = await response.data;
@@ -67,4 +73,3 @@ export async function applyRegistration(newuser) {
     console.log("Error", e);
   }
 }
-

@@ -9,13 +9,14 @@ const ProductListing = (props) => {
         <td>{product.name}</td>
         <td>{product.description}</td>
         <td>{product.price}</td>
+        <td hidden={true} >{product.ProductId}</td>
 
         <td>
           <button
             onClick={() => {
               //console.log("buy-button onClick", product.id, product.name); //funkar buy onClick 5
               const orderitem = {
-                Id: product.id,
+                ProductId: product.id,
                 Name: product.name,
                 Quantity: 1,
                 Price: product.price,

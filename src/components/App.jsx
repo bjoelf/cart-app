@@ -98,7 +98,8 @@ class App extends Component {
     _orderList.forEach((val) => {
       if (val.Name === orderitem.Name) {
         val.Quantity = val.Quantity + 1;
-        val.Price = (Number(val.Quantity) * Number(orderitem.Price)).toFixed(2);
+        val.Price = Number((Number(val.Quantity) * Number(orderitem.Price)).toFixed(2));
+        console.log("val.Price:", val.Price); // funkar = siffra
         found = true;
       }
       _totalCost = Number(_totalCost) + Number(val.Price);
@@ -106,7 +107,12 @@ class App extends Component {
     });
 
     if (found === false) {
-      orderitem.id = _orderList.length + 1;
+  
+        //Den här borde vi bara kunna ta bort!
+      //orderitem.Id = _orderList.length + 1;
+      orderitem.Price = orderitem.Price.toFixed(2);
+
+  
       _totalCost = Number(_totalCost) + Number(orderitem.Price);
       _totalItems = Number(_totalItems) + Number(orderitem.Quantity);
       _orderList.push(orderitem);
@@ -128,8 +134,10 @@ class App extends Component {
 
   Checkout = () => {
     const _this = this;
+    console.log("Checkout:", this.state.orderList);
+
     createOrder(this.state.userToken, this.state.orderList).then((data) => {
-      console.log(data);
+      console.log("Checkout retur:", data);
 
       if (data === "Ok") {
         console.log("order gick igenom");

@@ -9,6 +9,7 @@ const Cart = (props) => {
         <td>{item.Name}</td>
         <td>{item.Quantity}</td>
         <td>{item.Price}</td>
+        <td hidden={true} >{item.ProductId}</td>
       </tr>
     );
   });
